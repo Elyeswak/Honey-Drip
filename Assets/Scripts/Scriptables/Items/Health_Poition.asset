@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa530b5ee22556d41a6fa3248bda05b1, type: 3}
+  m_Name: Health_Poition
+  m_EditorClassIdentifier: 
+  Quantity: 1
+  Rarity: 1
+  Value: 1
+  Level: 1
+  itemName: Health Poition
+  description: This is a health potion use it to restore 15 health points
+  icon: {fileID: 21300000, guid: e9e503fbbc954c34bbaf8ef1d3f8812a, type: 3}
+  prefab: {fileID: 1431409621378495101, guid: 74025d637679c6a4a9b921f6c31084b3, type: 3}
+  maxStack: 15
+  cardCollection: {fileID: 0}
+  cardPrefab: {fileID: 0}
+  healthRestoreAmount: 15
