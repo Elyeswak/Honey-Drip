@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PlayerController _playerPrefab;
+    [SerializeField] private GameObject prefab1; 
+    [SerializeField] private GameObject prefab2;
 
     private InventroyManager _inventoryManager;
     public static InventroyManager InventoryManager => _instance._inventoryManager;
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
         _instance._playerController = Instantiate(_instance._playerPrefab, position, Quaternion.identity);
         PlayerCamera.FollowTargetAsync(_instance._playerController.transform).GetAwaiter();
         _instance._player = _instance._playerController.GetComponent<Player>();
+
+        // Instantiate prefabs near the player
+        _instance.PlaceRandomObjectsNearPlayer(position);
     }
 
     private void Start()
@@ -63,4 +68,26 @@ public class GameManager : MonoBehaviour
     }
 
     public void Quit() => Application.Quit();
+
+    private void PlaceRandomObjectsNearPlayer(Vector3 playerPosition)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 position1 = GetRandomPositionNear(playerPosition);
+            Instantiate(prefab1, position1, Quaternion.identity);
+
+            Vector3 position2 = GetRandomPositionNear(playerPosition);
+            Instantiate(prefab2, position2, Quaternion.identity);
+        }
+    }
+
+    private Vector3 GetRandomPositionNear(Vector3 origin)
+    {
+        float range = 10f; 
+        float x = Random.Range(origin.x - range, origin.x + range);
+        float z = Random.Range(origin.z - range, origin.z + range);
+        float y = origin.y+0.2f; 
+
+        return new Vector3(x, y, z);
+    }
 }

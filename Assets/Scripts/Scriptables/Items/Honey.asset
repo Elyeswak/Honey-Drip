@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea07bf45ffb8ffa41bce28ba4098e6df, type: 3}
   m_Name: Honey
   m_EditorClassIdentifier: 
-  Quantity: 2
+  Quantity: 1
   Rarity: 2
   Value: 1
   Level: 1
@@ -21,7 +21,7 @@ MonoBehaviour:
     hero.
   icon: {fileID: 21300000, guid: ce107c170ebb23e43a8d06e0d5dd011e, type: 3}
   prefab: {fileID: 1431409621378495101, guid: 74025d637679c6a4a9b921f6c31084b3, type: 3}
-  maxStack: 100
+  maxStack: 30
   cardCollection: {fileID: 0}
   cardPrefab: {fileID: 0}
   honeyRestoreAmount: 20

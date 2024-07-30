@@ -29,10 +29,9 @@ public class PlayerController : MonoBehaviour
         {
             Item it = ScriptableObject.Instantiate<Item>(item);
             inventory.AddItem(it);
-            GameManager.InventoryManager.AddItemtoUI(it);
+
         }
     }
-
 
     public void DisableInput()
     {
@@ -55,10 +54,10 @@ public class PlayerController : MonoBehaviour
             Vector2 mousePosition = context.ReadValue<Vector2>();
 
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-    
+
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-  
+
                 string layer = LayerMask.LayerToName(hit.transform.gameObject.layer);
                 switch (layer)
                 {

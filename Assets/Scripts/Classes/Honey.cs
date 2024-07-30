@@ -15,6 +15,6 @@ public class Honey : Item
 
     private void RestoreHoney()
     {
-     
+        Debug.Log("honey effect!");
     }
 }

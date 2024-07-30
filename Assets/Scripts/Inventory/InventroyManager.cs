@@ -131,14 +131,6 @@ public class InventroyManager : MonoBehaviour
         bool isActive = !inventory.activeSelf;
         inventory.SetActive(isActive);
 
-      /*  if (isActive)
-        {
-            HaltPlayerInput();
-        }
-        else
-        {
-            ResumePlayerInput();
-        }*/
     }
 
 
@@ -184,10 +176,9 @@ public class InventroyManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("item not deleted");
     }
 
-    private void HaltPlayerInput()
+    public void HaltPlayerInput()
     {
     
         if (playerScript != null)
@@ -196,7 +187,7 @@ public class InventroyManager : MonoBehaviour
         }
     }
 
-    private void ResumePlayerInput()
+    public void ResumePlayerInput()
     {
  
         if (playerScript != null)

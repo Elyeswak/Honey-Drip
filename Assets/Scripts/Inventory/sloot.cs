@@ -24,6 +24,8 @@ public class sloot : MonoBehaviour
 
     public void UseStoredItem()
     {
+        manager.HaltPlayerInput();
+
         if (CurrentSlot.transform.childCount == 0)
         {
             Debug.Log("UseStoredItem: CurrentSlot is empty");
@@ -37,6 +39,14 @@ public class sloot : MonoBehaviour
         {
             itemscript.UseItemEffect();
             Debug.Log($"UseStoredItem: Used item {itemscript.StoredItem.itemName}");
+
+            // Check the quantity and remove the item if it reaches zero
+            if (itemscript.StoredItem.Quantity <= 0)
+            {
+                GameManager.PlayerController.inventory.RemoveItemCompletely(itemscript.StoredItem);
+                Destroy(child.gameObject);
+                Debug.Log($"UseStoredItem: Removed item {itemscript.StoredItem.itemName} because quantity is zero");
+            }
         }
         else
         {
@@ -44,7 +54,9 @@ public class sloot : MonoBehaviour
         }
 
         UpdateTooltip();
+        manager.ResumePlayerInput();
     }
+
 
     public Item DeleteStoredItem()
     {
@@ -95,19 +107,16 @@ public class sloot : MonoBehaviour
             if (itemUi != null)
             {
                 tooltipTrigger.header = itemUi.StoredItem.itemName;
-                tooltipTrigger.content = itemUi.StoredItem.description; 
-                Debug.Log($"UpdateTooltip: Tooltip updated - Header: {tooltipTrigger.header}, Content: {tooltipTrigger.content}");
+                tooltipTrigger.content = itemUi.StoredItem.description;
+     
             }
-            else
-            {
-                Debug.LogWarning("UpdateTooltip: item_ui component not found on child of CurrentSlot.");
-            }
+         
         }
         else
         {
             tooltipTrigger.header = "";
             tooltipTrigger.content = "";
-            Debug.Log("UpdateTooltip: Tooltip cleared.");
+         
         }
     }
 
