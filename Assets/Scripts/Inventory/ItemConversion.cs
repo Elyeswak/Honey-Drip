@@ -1,6 +1,4 @@
-// File: ItemConversion.cs
 using System;
-using UnityEditor;
 using UnityEngine;
 
 public static class ItemConversion
@@ -28,11 +26,11 @@ public static class ItemConversion
             Value = item.Value,
             Level = item.Level,
             description = item.description,
-            iconPath = item.icon != null ? AssetDatabase.GetAssetPath(item.icon) : "",
-            prefabPath = item.prefab != null ? AssetDatabase.GetAssetPath(item.prefab) : "",
+            iconPath = item.icon != null ? GetAssetPath(item.icon) : "",
+            prefabPath = item.prefab != null ? GetAssetPath(item.prefab) : "",
             maxStack = item.maxStack,
-            cardCollectionPath = item.cardCollection != null ? AssetDatabase.GetAssetPath(item.cardCollection) : "",
-            cardPrefabPath = item.cardPrefab != null ? AssetDatabase.GetAssetPath(item.cardPrefab) : "",
+            cardCollectionPath = item.cardCollection != null ? GetAssetPath(item.cardCollection) : "",
+            cardPrefabPath = item.cardPrefab != null ? GetAssetPath(item.cardPrefab) : "",
             itemType = item.GetType().Name,
             honeyRestoreAmount = honeyRestoreAmount,
             healthRestoreAmount = healthRestoreAmount
@@ -61,11 +59,11 @@ public static class ItemConversion
         item.Value = itemData.Value;
         item.Level = itemData.Level;
         item.description = itemData.description;
-        item.icon = AssetDatabase.LoadAssetAtPath<Sprite>(itemData.iconPath);
-        item.prefab = AssetDatabase.LoadAssetAtPath<GameObject>(itemData.prefabPath);
+        item.icon = LoadAsset<Sprite>(itemData.iconPath);
+        item.prefab = LoadAsset<GameObject>(itemData.prefabPath);
         item.maxStack = itemData.maxStack;
-        item.cardCollection = AssetDatabase.LoadAssetAtPath<GameObject>(itemData.cardCollectionPath);
-        item.cardPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(itemData.cardPrefabPath);
+        item.cardCollection = LoadAsset<GameObject>(itemData.cardCollectionPath);
+        item.cardPrefab = LoadAsset<GameObject>(itemData.cardPrefabPath);
 
         if (item is Honey honey && itemData.honeyRestoreAmount.HasValue)
         {
@@ -78,5 +76,24 @@ public static class ItemConversion
         }
 
         return item;
+    }
+
+    private static string GetAssetPath(UnityEngine.Object asset)
+    {
+#if UNITY_EDITOR
+        return UnityEditor.AssetDatabase.GetAssetPath(asset);
+#else
+        // Implement runtime path retrieval if needed, or return empty string
+        return "";
+#endif
+    }
+
+    private static T LoadAsset<T>(string path) where T : UnityEngine.Object
+    {
+#if UNITY_EDITOR
+        return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
+#else
+        return Resources.Load<T>(path);
+#endif
     }
 }
