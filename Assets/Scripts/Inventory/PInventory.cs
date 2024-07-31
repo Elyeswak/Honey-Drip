@@ -9,11 +9,11 @@ public class PInventory : MonoBehaviour
     private List<Item> itemsList;
     public PlayerController playerScript;
     private GameObject Player;
+    private const int MaxSlots = 8;
 
     public PInventory()
     {
         itemsList = new List<Item>();
-        Debug.Log("inventory created !!");
         Player = GameObject.FindGameObjectWithTag("Player");
         playerScript = Player.GetComponent<PlayerController>();
     }
@@ -44,6 +44,12 @@ public class PInventory : MonoBehaviour
         }
         else
         {
+            if (itemsList.Count >= MaxSlots)
+            {
+                Debug.Log("Inventory is full. Cannot add more items.");
+                return;
+            }
+
             if (item.Quantity <= item.maxStack)
             {
                 itemsList.Add(item);
@@ -56,16 +62,22 @@ public class PInventory : MonoBehaviour
                 item.Quantity = item.maxStack;
                 itemsList.Add(item);
                 GameManager.InventoryManager.AddItemtoUI(item);
-                Debug.Log($"Added {item.itemName} to max stack size {item.maxStack}. Excess quantity of {excessQuantity} not added.");
                 OnitemlistChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-
     public List<Item> GetItemList()
     {
         return itemsList;
+    }
+
+    public void ItemList()
+    {
+        foreach (Item item in itemsList)
+        {
+            Debug.Log("Item: " + item.itemName + ", Quantity: " + item.Quantity);
+        }
     }
 
     public void RemoveItem(Item item)
@@ -80,6 +92,7 @@ public class PInventory : MonoBehaviour
                 if (i.Quantity <= 0)
                 {
                     itemsList.Remove(i);
+                    OnitemlistChanged?.Invoke(this, EventArgs.Empty);
                     Debug.Log($"Item {i.itemName} removed from inventory because quantity is zero.");
                 }
                 break;
@@ -94,7 +107,7 @@ public class PInventory : MonoBehaviour
         if (item == null) return;
 
         itemsList.Remove(item);
-        Debug.Log($"Item {item.itemName} completely removed from inventory.");
         OnitemlistChanged?.Invoke(this, EventArgs.Empty);
+        Debug.Log($"Item {item.itemName} completely removed from inventory.");
     }
 }

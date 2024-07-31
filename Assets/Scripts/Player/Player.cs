@@ -53,4 +53,7 @@ public struct PlayerStats
 {
     public int Honey;
     public int HoneyMax;
+    public int Health;
+    public int HealthMax;
+    public float Xp;
 }

@@ -15,8 +15,9 @@ public class InventroyManager : MonoBehaviour
     public Transform cursor;
     public Vector3 offset;
     public GameObject ItemPrefab;
-    item_ui itemUiScript;
+    public GameObject popup; // Reference to the drop popup UI
     public static PlayerController playerScript;
+    private item_ui itemUiScript;
 
     private Vector2 mousePosition;
     private InputActions playerInputActions;
@@ -49,8 +50,7 @@ public class InventroyManager : MonoBehaviour
         InitInventory();
         SetSlotIds();
         checkSlots();
-        itemUiScript = ItemPrefab.gameObject.GetComponent<item_ui>();
-
+        itemUiScript = ItemPrefab.GetComponent<item_ui>();
         playerInputActions = new InputActions();
         playerInputActions.UI.Point.performed += ctx => mousePosition = ctx.ReadValue<Vector2>();
         playerInputActions.Enable();
@@ -130,10 +130,7 @@ public class InventroyManager : MonoBehaviour
     {
         bool isActive = !inventory.activeSelf;
         inventory.SetActive(isActive);
-
     }
-
-
 
     bool checkItemInInventory(Item item)
     {
@@ -146,7 +143,6 @@ public class InventroyManager : MonoBehaviour
             {
                 if (child.GetChild(0).GetComponent<item_ui>().StoredItem.itemName == item.itemName)
                 {
-                    Debug.Log("ui item exists!");
                     return true;
                 }
             }
@@ -169,7 +165,6 @@ public class InventroyManager : MonoBehaviour
                     {
                         if (child.GetChild(0).GetComponent<item_ui>().StoredItem.Quantity <= 1)
                         {
-                            Debug.Log("item deleted");
                             Destroy(child.GetChild(0).gameObject);
                         }
                     }
@@ -178,9 +173,18 @@ public class InventroyManager : MonoBehaviour
         }
     }
 
+    // New function to completely remove an item
+    public void RemoveItemCompletely(Item item)
+    {
+ 
+        playerScript.inventory.RemoveItemCompletely(item);
+
+        playerScript.inventory.ItemList();
+        checkSlots();
+    }
+
     public void HaltPlayerInput()
     {
-    
         if (playerScript != null)
         {
             playerScript.DisableInput();
@@ -189,7 +193,6 @@ public class InventroyManager : MonoBehaviour
 
     public void ResumePlayerInput()
     {
- 
         if (playerScript != null)
         {
             playerScript.EnableInput();

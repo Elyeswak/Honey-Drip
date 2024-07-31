@@ -16,6 +16,7 @@ public class item_ui : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
     private Transform originalParent;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
+    private GameObject popup;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class item_ui : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
     private void Start()
     {
         canvas = FindObjectOfType<Canvas>();
+        popup = invManager.popup;
         UpdateUI();
     }
 
@@ -38,7 +40,6 @@ public class item_ui : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
     {
         imageIcon.sprite = StoredItem.icon;
         QuantityTxt.text = StoredItem.Quantity.ToString();
-
         if (transform.parent != null && transform.parent.GetComponent<sloot>() != null)
         {
             transform.parent.GetComponent<sloot>().OnSlotContentChanged();
@@ -112,18 +113,23 @@ public class item_ui : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
         if (newParent != null && newParent.childCount == 0)
         {
             transform.SetParent(newParent);
-            transform.localPosition = Vector3.zero; // Reset the position in the new slot
+            transform.localPosition = Vector3.zero;
+        }
+        // Item dropped outside the inventory or slot
+        else if (newParent == null)
+        {
+            StartCoroutine(ShowDropPopup());
         }
         else
         {
             transform.SetParent(originalParent);
-            transform.localPosition = Vector3.zero; // Reset the position in the original slot
+            // Reset the position in the original slot
+            transform.localPosition = Vector3.zero;
         }
 
         canvasGroup.blocksRaycasts = true;
         invManager.checkSlots();
 
-        // Notify the slot about the content change
         if (transform.parent != null && transform.parent.GetComponent<sloot>() != null)
         {
             transform.parent.GetComponent<sloot>().OnSlotContentChanged();
@@ -147,5 +153,58 @@ public class item_ui : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
         }
 
         return null;
+    }
+
+    private IEnumerator ShowDropPopup()
+    {
+        popup.SetActive(true);
+
+        bool userResponse = false;
+        bool hasResponded = false;
+
+
+        void OnYesButtonClicked()
+        {
+            userResponse = true;
+            hasResponded = true;
+        }
+
+        void OnNoButtonClicked()
+        {
+            userResponse = false;
+            hasResponded = true;
+        }
+
+
+        popup.transform.Find("YesButton").GetComponent<Button>().onClick.AddListener(OnYesButtonClicked);
+        popup.transform.Find("NoButton").GetComponent<Button>().onClick.AddListener(OnNoButtonClicked);
+
+
+        yield return new WaitUntil(() => hasResponded);
+
+
+        popup.transform.Find("YesButton").GetComponent<Button>().onClick.RemoveListener(OnYesButtonClicked);
+        popup.transform.Find("NoButton").GetComponent<Button>().onClick.RemoveListener(OnNoButtonClicked);
+
+        popup.SetActive(false);
+
+        if (userResponse)
+        {
+            invManager.RemoveItemCompletely(StoredItem);
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Reset the position in the original slot
+            transform.SetParent(originalParent);
+            transform.localPosition = Vector3.zero;
+        }
+
+        invManager.checkSlots();
+
+        if (transform.parent != null && transform.parent.GetComponent<sloot>() != null)
+        {
+            transform.parent.GetComponent<sloot>().OnSlotContentChanged();
+        }
     }
 }

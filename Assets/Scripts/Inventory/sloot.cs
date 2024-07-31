@@ -29,6 +29,7 @@ public class sloot : MonoBehaviour
         if (CurrentSlot.transform.childCount == 0)
         {
             Debug.Log("UseStoredItem: CurrentSlot is empty");
+            manager.ResumePlayerInput();
             return;
         }
 
@@ -40,10 +41,10 @@ public class sloot : MonoBehaviour
             itemscript.UseItemEffect();
             Debug.Log($"UseStoredItem: Used item {itemscript.StoredItem.itemName}");
 
-            // Check the quantity and remove the item if it reaches zero
             if (itemscript.StoredItem.Quantity <= 0)
             {
                 GameManager.PlayerController.inventory.RemoveItemCompletely(itemscript.StoredItem);
+                ClearTooltip();
                 Destroy(child.gameObject);
                 Debug.Log($"UseStoredItem: Removed item {itemscript.StoredItem.itemName} because quantity is zero");
             }
@@ -53,10 +54,8 @@ public class sloot : MonoBehaviour
             Debug.LogWarning("UseStoredItem: item_ui component not found on child");
         }
 
-        UpdateTooltip();
         manager.ResumePlayerInput();
     }
-
 
     public Item DeleteStoredItem()
     {
@@ -73,6 +72,8 @@ public class sloot : MonoBehaviour
         if (itemscript != null)
         {
             item = itemscript.StoredItem;
+            GameManager.PlayerController.inventory.RemoveItemCompletely(item);
+            ClearTooltip();
             Destroy(child.gameObject);
             Debug.Log($"DeleteStoredItem: Deleted item {item.itemName}");
         }
@@ -81,7 +82,6 @@ public class sloot : MonoBehaviour
             Debug.LogWarning("DeleteStoredItem: item_ui component not found on child");
         }
 
-        UpdateTooltip();
         return item;
     }
 
@@ -108,15 +108,16 @@ public class sloot : MonoBehaviour
             {
                 tooltipTrigger.header = itemUi.StoredItem.itemName;
                 tooltipTrigger.content = itemUi.StoredItem.description;
-     
+                Debug.Log($"UpdateTooltip: Tooltip updated - Header: {tooltipTrigger.header}, Content: {tooltipTrigger.content}");
             }
-         
+            else
+            {
+                ClearTooltip();
+            }
         }
         else
         {
-            tooltipTrigger.header = "";
-            tooltipTrigger.content = "";
-         
+            ClearTooltip();
         }
     }
 
@@ -125,13 +126,15 @@ public class sloot : MonoBehaviour
         var tooltipTrigger = CurrentSlot.GetComponent<TooltipTrigger>();
         if (tooltipTrigger != null)
         {
-            tooltipTrigger.header = "";
-            tooltipTrigger.content = "";
+            tooltipTrigger.Clear();
             Debug.Log("ClearTooltip: Tooltip cleared.");
+        }
+        else
+        {
+            Debug.Log("ClearTooltip: TooltipTrigger component not found.");
         }
     }
 
-    // Call this method whenever the slot content changes
     public void OnSlotContentChanged()
     {
         UpdateTooltip();

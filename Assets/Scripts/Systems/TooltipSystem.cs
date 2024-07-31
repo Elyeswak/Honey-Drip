@@ -21,4 +21,5 @@ public class TooltipSystem : MonoBehaviour
     {
         _instance.tooltip.gameObject.SetActive(false);
     }
+
 }

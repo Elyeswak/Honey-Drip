@@ -26,9 +26,8 @@ public class GameManager : MonoBehaviour
     {
         _instance._playerController = Instantiate(_instance._playerPrefab, position, Quaternion.identity);
         PlayerCamera.FollowTargetAsync(_instance._playerController.transform).GetAwaiter();
-        _instance._player = _instance._playerController.GetComponent<Player>();
 
-        // Instantiate prefabs near the player
+        _instance._player = _instance._playerController.GetComponent<Player>();
         _instance.PlaceRandomObjectsNearPlayer(position);
     }
 

@@ -14,6 +14,12 @@ public class Tooltip : MonoBehaviour
 
     public int characterWrapLimit;
 
+    public RectTransform rectTransform;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
     public void SetText(string description, string header = "")
     {
         if(string.IsNullOrEmpty(header))
@@ -31,5 +37,17 @@ public class Tooltip : MonoBehaviour
         contentField.text = description;
         layoutElement.enabled = (headerLength > characterWrapLimit || contentLength > characterWrapLimit) ? true : false;
     }
-  
+
+
+    private void Update()
+    {
+        Vector2 mousePosition = GameManager.Mouse.position.ReadValue();
+
+        float pivotX = mousePosition.x / Screen.width;
+        float pivotY = mousePosition.y / Screen.height;
+
+        rectTransform.pivot = new Vector2(pivotX, pivotY);
+        transform.position = mousePosition;
+    }
+
 }

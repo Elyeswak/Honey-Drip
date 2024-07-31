@@ -10,13 +10,11 @@ public class PickupObject : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("item pickedup");
+           
             Item it = ScriptableObject.Instantiate<Item>(item);
 
             GameManager.PlayerController.inventory.AddItem(it);
-
-           
-
+            Debug.Log("Ontrigger item");
             Destroy(gameObject);
         }
     }

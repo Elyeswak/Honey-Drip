@@ -2832,7 +2832,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerStats:
     Honey: 50
-    HoneyMax: 50
+    HoneyMax: 200
+    Health: 0
+    HealthMax: 200
+    Xp: 0
 --- !u!1 &9042284644593946674
 GameObject:
   m_ObjectHideFlags: 0

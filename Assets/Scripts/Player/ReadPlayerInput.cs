@@ -23,17 +23,7 @@ public class ReadPlayerInput : MonoBehaviour
 
 
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+  
     public void ReadStringInput(string s)
     {
         inputString = s;

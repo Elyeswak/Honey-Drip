@@ -9,12 +9,11 @@ public class Honey : Item
 
     public override void ItemEffect()
     {
-        base.ItemEffect();
         RestoreHoney();
     }
 
     private void RestoreHoney()
     {
-        Debug.Log("honey effect!");
-    }
+        GameManager.Player.AddHoney(honeyRestoreAmount);
+    } 
 }
