@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private Renderer _highlightedNodeRenderer = null;
     public static Node highlightedNode = null;
     GameObject GameCanvas;
-    [SerializeField] private Item[] items;
+    //[SerializeField] private Item[] items;
 
     private bool isInputEnabled = true;
 
@@ -25,12 +25,12 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         GameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
-        foreach (Item item in items)
+ /*       foreach (Item item in items)
         {
             Item it = ScriptableObject.Instantiate<Item>(item);
             inventory.AddItem(it);
 
-        }
+        }*/
     }
 
     public void DisableInput()

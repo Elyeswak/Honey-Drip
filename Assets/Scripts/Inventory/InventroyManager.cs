@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InventroyManager : MonoBehaviour
 {
@@ -54,6 +54,7 @@ public class InventroyManager : MonoBehaviour
         playerInputActions = new InputActions();
         playerInputActions.UI.Point.performed += ctx => mousePosition = ctx.ReadValue<Vector2>();
         playerInputActions.Enable();
+        SFXManager.PlayMusic("Main");
     }
 
     private void Update()
@@ -64,6 +65,7 @@ public class InventroyManager : MonoBehaviour
         }
 
         cursor.gameObject.SetActive(cursor.childCount > 0);
+
     }
 
     void InitInventory()
@@ -176,7 +178,7 @@ public class InventroyManager : MonoBehaviour
     // New function to completely remove an item
     public void RemoveItemCompletely(Item item)
     {
- 
+
         playerScript.inventory.RemoveItemCompletely(item);
 
         playerScript.inventory.ItemList();
@@ -196,6 +198,34 @@ public class InventroyManager : MonoBehaviour
         if (playerScript != null)
         {
             playerScript.EnableInput();
+        }
+    }
+
+    // Save and Load Inventory
+    public void SaveInventory()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, "inventory.json");
+        PInventoryData data = playerScript.inventory.GetInventoryData();
+        SaveLoadUtility.SaveData(data, filePath);
+        Debug.Log("Inventory saved");
+    }
+
+    public void LoadInventory()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, "inventory.json");
+        PInventoryData loadedData = SaveLoadUtility.LoadData<PInventoryData>(filePath);
+        if (loadedData != null)
+        {
+            playerScript.inventory.SetInventoryData(loadedData);
+            foreach (Item item in playerScript.inventory.GetItemList())
+            {
+                AddItemtoUI(item);
+            }
+            Debug.Log("Inventory loaded");
+        }
+        else
+        {
+            Debug.LogWarning("No inventory data found");
         }
     }
 }

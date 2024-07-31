@@ -8,6 +8,7 @@ public class PInventory : MonoBehaviour
     public event EventHandler OnitemlistChanged;
     private List<Item> itemsList;
     public PlayerController playerScript;
+    private PInventoryData inventoryData;
     private GameObject Player;
     private const int MaxSlots = 8;
 
@@ -16,6 +17,7 @@ public class PInventory : MonoBehaviour
         itemsList = new List<Item>();
         Player = GameObject.FindGameObjectWithTag("Player");
         playerScript = Player.GetComponent<PlayerController>();
+        inventoryData = new PInventoryData();
     }
 
     public void AddItem(Item item)
@@ -109,5 +111,25 @@ public class PInventory : MonoBehaviour
         itemsList.Remove(item);
         OnitemlistChanged?.Invoke(this, EventArgs.Empty);
         Debug.Log($"Item {item.itemName} completely removed from inventory.");
+    }
+    public PInventoryData GetInventoryData()
+    {
+        PInventoryData data = new PInventoryData();
+        data.itemsList = new List<ItemData>();
+        foreach (Item item in itemsList)
+        {
+            data.itemsList.Add(ItemConversion.ToItemData(item));
+        }
+        return data;
+    }
+
+    public void SetInventoryData(PInventoryData data)
+    {
+        itemsList.Clear();
+        foreach (ItemData itemData in data.itemsList)
+        {
+            itemsList.Add(ItemConversion.ToItem(itemData));
+        }
+        OnitemlistChanged?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -1,4 +1,4 @@
-using TMPro;
+// File: GameManager.cs
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PlayerController _playerPrefab;
-    [SerializeField] private GameObject prefab1; 
+    [SerializeField] private GameObject prefab1;
     [SerializeField] private GameObject prefab2;
 
     private InventroyManager _inventoryManager;
@@ -59,6 +59,14 @@ public class GameManager : MonoBehaviour
 
         Node node = GridMapGenerator.GetNode(new Vector2(3, 3));
         BuildingSystem.CreateBuilding(node, BuildingSystem.Shop);
+
+        _inventoryManager.LoadInventory();
+      
+    }
+
+    private void OnApplicationQuit()
+    {
+        _inventoryManager.SaveInventory();
     }
 
     public void Print_UT(string text)
@@ -82,10 +90,10 @@ public class GameManager : MonoBehaviour
 
     private Vector3 GetRandomPositionNear(Vector3 origin)
     {
-        float range = 10f; 
+        float range = 10f;
         float x = Random.Range(origin.x - range, origin.x + range);
         float z = Random.Range(origin.z - range, origin.z + range);
-        float y = origin.y+0.2f; 
+        float y = origin.y + 0.2f;
 
         return new Vector3(x, y, z);
     }

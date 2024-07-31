@@ -20,6 +20,24 @@ public class Player : MonoBehaviour
         return _playerStats.Honey == _playerStats.HoneyMax;
     }
 
+    public float GetHealth()
+    {
+      return _playerStats.Health;
+    }
+
+    public void SetHealth(float amount)
+    {
+        _playerStats.Health = amount;
+    }
+
+    public bool AddHealth(int amount)
+    {
+        _playerStats.Health += amount;
+        if (_playerStats.Health > _playerStats.HealthMax)
+            _playerStats.Health = _playerStats.HealthMax;
+
+        return _playerStats.Health == _playerStats.HealthMax;
+    }
     public bool SubtractHoney(int amount)
     {
         if (_playerStats.Honey - amount < 0)
@@ -53,7 +71,7 @@ public struct PlayerStats
 {
     public int Honey;
     public int HoneyMax;
-    public int Health;
-    public int HealthMax;
+    public float Health;
+    public float HealthMax;
     public float Xp;
 }

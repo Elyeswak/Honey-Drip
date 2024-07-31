@@ -15,7 +15,7 @@ public class Potion : Item
 
     private void RestoreHealth()
     {
-        Debug.Log("Poition effect");
+        GameManager.Player.AddHealth(healthRestoreAmount);
     
     }
 }
