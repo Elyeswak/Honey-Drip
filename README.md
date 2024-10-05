@@ -1,5 +1,3 @@
-# Project Overview and Personal Assessment
-
 ## Introduction
 
 I started with the design of the game system titled **Queens Make Bees**. The core mechanics are as follows:
@@ -38,16 +36,3 @@ I started with the design of the game system titled **Queens Make Bees**. The co
 - **Building System**: This system allows players to construct and customize structures within the game, adding a layer of creativity and strategy.
 - **Beta System for Saving and Loading**: Ensuring that players can save their progress and load it accurately was critical. I assured a robust beta system for this purpose.
 - **SFX Manager**: This component manages sound effects within the game, ensuring that audio cues and ambiance enhance the player's immersion.
-
-## Thought Process During the Interview
-
-Throughout the interview and development process, my  focus was on creating a well-rounded gaming experience. I was highly motivated to deliver both visually appealing and technically systems. My approach was methodical:
-
-1. **Analysis**: I started by thoroughly understanding the requirements and expectations for each system.
-2. **Design and Planning**: I designed each system, ensuring they would integrate smoothly with each other I used pen and paper for this.
-3. **Development**: During development, I prioritized efficiency and quality, writing clean and maintainable code.
-4. **Testing**: I rigorously tested each component to ensure reliability and performance.
-
-## Personal Assessment
-
-I am proud of the dedication and effort I put into this project. The 48-hour timeframe was a significant challenge, but I enjoyed every moment of it. The inventory system, in particular, was a highlight for me, as it required careful integration with all other systems. Although I couldn't complete the NPC interactions and add more richness to the items due to time constraints, I believe the systems I delivered were of high quality.
